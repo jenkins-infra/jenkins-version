@@ -13,14 +13,30 @@ brew install jv
 ```
 
 This can be used a docker container with the following:
-TODO
+
 ```
 docker run -it garethjevans/jv
 ```
 
 ## Usage
 
-TODO
+To get the latest weekly release:
+
+```
+jx get [--username <username> --password <password>]
+```
+
+To get the latest LTS release:
+
+```
+jx get --version-identifier lts [--username <username> --password <password>]
+```
+
+To get the latest LTS for a particular release train:
+
+```
+jx get --version-identifier 2.249 [--username <username> --password <password>]
+```
 
 ## Documentation
 
