@@ -13,6 +13,9 @@ ARG version
 ARG build_date
 ARG sha
 
+ENV CGO_ENABLED=0
+
+RUN echo "GOOS=$GOOS, GOARCH=$GOARCH"
 RUN \
   go build -v -a \
   -ldflags "-w -s \
