@@ -2,6 +2,7 @@ package version_test
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -15,22 +16,29 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetJenkinsVersion_Latest(t *testing.T) {
-	stubWithFixture(t, "metadata.golden.xml")
+func TestGetJenkinsVersion(t *testing.T) {
+	type test struct {
+		versionIdentifier string
+		expected          string
+	}
 
-	v, err := version.GetJenkinsVersion(version.URL, "latest", "", "")
-	assert.NoError(t, err)
+	tests := []test{
+		{versionIdentifier: "latest", expected: "2.276"},
+		{versionIdentifier: "1", expected: "1.658"},
+		{versionIdentifier: "2", expected: "2.276"},
+		{versionIdentifier: "2.249", expected: "2.249.3"},
+		{versionIdentifier: "2.249.3", expected: "2.249.3"},
+	}
 
-	assert.Equal(t, "2.276", v)
-}
+	for _, tc := range tests {
+		t.Run(fmt.Sprintf("versionIdentifier-%s", tc.versionIdentifier), func(t *testing.T) {
+			stubWithFixture(t, "metadata.golden.xml")
 
-func TestGetJenkinsVersion_Release(t *testing.T) {
-	stubWithFixture(t, "metadata.golden.xml")
-
-	v, err := version.GetJenkinsVersion(version.URL, "release", "", "")
-	assert.NoError(t, err)
-
-	assert.Equal(t, "2.276", v)
+			v, err := version.GetJenkinsVersion(version.URL, tc.versionIdentifier, "", "")
+			assert.NoError(t, err)
+			assert.Equal(t, tc.expected, v)
+		})
+	}
 }
 
 func stubWithFixture(t *testing.T, file string) {

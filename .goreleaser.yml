@@ -1,0 +1,70 @@
+---
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - id: jv-linux
+    main: ./cmd/jv/jv.go
+    binary: jv
+    ldflags:
+      - -X github.com/garethjevans/jv/pkg/version.Version={{.Version}} -X github.com/garethjevans/updatecenter/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/updatecenter/pkg/version.BuildDate={{.CommitDate}}
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+
+  - id: jv-darwin
+    main: ./cmd/jv/jv.go
+    binary: jv
+    ldflags:
+      - -X github.com/garethjevans/jv/pkg/version.Version={{.Version}} -X github.com/garethjevans/updatecenter/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/updatecenter/pkg/version.BuildDate={{.CommitDate}}
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+  - id: jv-windows-amd64
+    main: ./cmd/jv/jv.go
+    binary: jv
+    ldflags:
+      - -X github.com/garethjevans/updatecenter/pkg/version.Version={{.Version}} -X github.com/garethjevans/updatecenter/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/updatecenter/pkg/version.BuildDate={{.CommitDate}}
+    goos:
+      - windows
+    goarch:
+      - amd64
+
+archives:
+  - name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "{{ .ProjectName }}-checksums.txt"
+  algorithm: sha256
+
+changelog:
+  skip: false
+
+release:
+  draft: false
+  prerelease: false
+  name_template: "{{.Tag}}"
+
+brews:
+  - name: jv
+    tap:
+      owner: garethjevans
+      name: homebrew-tap
+      token: "{{ .Env.GITHUB_TOKEN }}"
+    commit_author:
+      name: garethjevans
+      email: gareth@bryncynfelin.co.uk
+    folder: Formula
+    description: "Determine a Jenkins Version"

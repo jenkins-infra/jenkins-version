@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/sirupsen/logrus"
+
 	"github.com/pkg/errors"
 )
 
@@ -29,6 +31,9 @@ func NewVersion(in string) Semver {
 }
 
 func toInt(in string) (int, error) {
+	if in == "" {
+		return 0, nil
+	}
 	s, err := strconv.Atoi(in)
 	if err != nil {
 		return -1, errors.Wrap(err, "unable to parse as int: "+in)
@@ -37,23 +42,58 @@ func toInt(in string) (int, error) {
 }
 
 func (v *Semver) String() string {
-	return fmt.Sprintf("%d.%d.%d.%s", v.Major, v.Minor, v.Patch, v.Other)
+	if v.Minor == "" {
+		return v.Major
+	} else if v.Patch == "" {
+		return fmt.Sprintf("%s.%s", v.Major, v.Minor)
+	} else if v.Other == "" {
+		return fmt.Sprintf("%s.%s.%s", v.Major, v.Minor, v.Patch)
+	} else {
+		return fmt.Sprintf("%s.%s.%s.%s", v.Major, v.Minor, v.Patch, v.Other)
+	}
 }
 
 func (v Semver) LessThan(o Semver) bool {
 	if v.Major != o.Major {
-		return v.Major < o.Major
+		val, err := v.lessThan(v.Major, o.Major)
+		if err != nil {
+			logrus.Warnf("unable to compare '%s' & '%s'", v.String(), o.String())
+			return false
+		}
+		return val
 	}
 
 	if v.Minor != o.Minor {
-		return v.Minor < o.Minor
+		val, err := v.lessThan(v.Minor, o.Minor)
+		if err != nil {
+			logrus.Warnf("unable to compare '%s' & '%s'", v.String(), o.String())
+			return false
+		}
+		return val
 	}
 
 	if v.Patch != o.Patch {
-		return v.Patch < o.Patch
+		val, err := v.lessThan(v.Patch, o.Patch)
+		if err != nil {
+			logrus.Warnf("unable to compare '%s' & '%s'", v.String(), o.String())
+			return false
+		}
+		return val
 	}
 
 	return strings.Compare(v.Other, o.Other) < 0
+}
+
+func (v Semver) lessThan(v1 string, v2 string) (bool, error) {
+	i1, err := toInt(v1)
+	if err != nil {
+		return false, err
+	}
+	i2, err := toInt(v2)
+	if err != nil {
+		return false, err
+	}
+	return i1 < i2, nil
 }
 
 type bySemVer []string
