@@ -1,9 +1,12 @@
 FROM golang:1.15 as builder
 
+# Install TARGETPLATFORM parser to translate its value to GOOS, GOARCH, and GOARM
+COPY --from=tonistiigi/xx:golang / /
+# Bring TARGETPLATFORM to the build scope
+ARG TARGETPLATFORM
+
 WORKDIR /go/src/app
-
 COPY . .
-
 RUN go get -d -v ./...
 
 RUN \
