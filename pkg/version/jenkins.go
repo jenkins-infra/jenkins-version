@@ -16,14 +16,17 @@ import (
 )
 
 var (
+	// Client the http client wrapper.
 	Client HTTPClient
-	URL    = "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/maven-metadata.xml"
+	// URL the default url to query.
+	URL = "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/maven-metadata.xml"
 )
 
 func init() {
 	Client = &http.Client{}
 }
 
+// HTTPClient interface that wraps the Do function.
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
