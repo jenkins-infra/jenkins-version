@@ -11,6 +11,7 @@ RUN go get -d -v ./...
 
 ARG version
 ARG build_date
+ARG sha
 
 RUN \
   go build -v -a \
