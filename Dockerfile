@@ -1,7 +1,7 @@
 FROM golang:1.15 as builder
 
 # Install TARGETPLATFORM parser to translate its value to GOOS, GOARCH, and GOARM
-COPY --from=tonistiigi/xx:golang / /
+# COPY --from=tonistiigi/xx:golang / /
 # Bring TARGETPLATFORM to the build scope
 ARG TARGETPLATFORM
 
@@ -15,7 +15,7 @@ ARG sha
 
 ENV CGO_ENABLED=0
 
-RUN echo "GOOS=$GOOS, GOARCH=$GOARCH"
+RUN echo "GOOS=$GOOS, GOARCH=$GOARCH, TARGETPLATFORM=$TARGETPLATFORM"
 RUN \
   go build -v -a \
   -ldflags "-w -s \
