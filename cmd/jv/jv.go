@@ -21,6 +21,7 @@ import (
 // Version is dynamically set by the toolchain or overridden by the Makefile.
 var Version = version.Version
 
+// Verbose enable verbose logging.
 var Verbose bool
 
 // BuildDate is dynamically set at build time in the Makefile.
