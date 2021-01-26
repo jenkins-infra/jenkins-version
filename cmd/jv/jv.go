@@ -6,6 +6,8 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"github.com/garethjevans/jenkins-version/pkg/cmd"
+
 	"github.com/garethjevans/jenkins-version/pkg/version"
 
 	"github.com/sirupsen/logrus"
@@ -38,7 +40,7 @@ func init() {
 	} else {
 		RootCmd.Version = fmt.Sprintf("%s (%s)", Version, BuildDate)
 	}
-	versionOutput = fmt.Sprintf("jenkins-version version %s", RootCmd.Version)
+	versionOutput = fmt.Sprintf("jv version %s", RootCmd.Version)
 	RootCmd.AddCommand(versionCmd)
 	RootCmd.SetVersionTemplate(versionOutput)
 
@@ -56,8 +58,7 @@ func init() {
 		return &FlagError{Err: err}
 	})
 
-	//RootCmd.AddCommand(cmd.NewCheckCmd())
-	//RootCmd.AddCommand(cmd.NewUpdateCmd())
+	RootCmd.AddCommand(cmd.NewGetCmd())
 
 	RootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		if Verbose {
@@ -87,7 +88,7 @@ func (fe FlagError) Unwrap() error {
 
 // RootCmd is the entry point of command-line execution.
 var RootCmd = &cobra.Command{
-	Use:   "jenkins-version",
+	Use:   "jv",
 	Short: "Jenkins Version CLI",
 	Long:  `a simple CLI to query the latest jenkins version.`,
 

@@ -1,8 +1,10 @@
-package version
+package version_test
 
 import (
 	"fmt"
 	"testing"
+
+	"github.com/garethjevans/jenkins-version/pkg/version"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -55,12 +57,13 @@ func TestSemVer(t *testing.T) {
 		{v1: "1.518", v2: "1.518.JENKINS-14362-jzlib", lessThan: false},
 		{v1: "1.513.JENKINS-14362-jzlib", v2: "1.513", lessThan: true},
 		{v1: "1.516.JENKINS-14362-jzlib", v2: "1.516", lessThan: true},
+		{v1: "2.4", v2: "2.4", lessThan: false},
 	}
 
 	for _, tc := range tests {
 		t.Run(fmt.Sprintf("compare %s < %s", tc.v1, tc.v2), func(t *testing.T) {
-			version1 := NewVersion(tc.v1)
-			version2 := NewVersion(tc.v2)
+			version1 := version.NewVersion(tc.v1)
+			version2 := version.NewVersion(tc.v2)
 			assert.Equal(t, tc.lessThan, version1.LessThan(version2))
 		})
 	}
