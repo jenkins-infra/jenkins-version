@@ -18,7 +18,7 @@ func TestSemVer(t *testing.T) {
 		{v1: "1.0.0", v2: "2.0.0", lessThan: true},
 		{v1: "1.0.0", v2: "1.1.0", lessThan: true},
 		{v1: "1.0.0", v2: "1.0.1", lessThan: true},
-		{v1: "1.0.0.A", v2: "1.0.0.B", lessThan: true},
+		{v1: "1.0.0-A", v2: "1.0.0-B", lessThan: true},
 		{v1: "2.0-alpha-1", v2: "2.5", lessThan: true},
 		{v1: "2.5", v2: "2.0-alpha-1", lessThan: false},
 		{v1: "2.5", v2: "2.0-alpha-2", lessThan: false},
@@ -52,7 +52,7 @@ func TestSemVer(t *testing.T) {
 		{v1: "2.0-alpha-4", v2: "2.0-beta-1", lessThan: true},
 		{v1: "2.4", v2: "2.0-beta-1", lessThan: false},
 		{v1: "1.518.JENKINS-14362-jzlib", v2: "1.518", lessThan: true},
-		{v1: "1.518", v2: "1.518.JENKINS-14362-jzlib", lessThan: true},
+		{v1: "1.518", v2: "1.518.JENKINS-14362-jzlib", lessThan: false},
 		{v1: "1.513.JENKINS-14362-jzlib", v2: "1.513", lessThan: true},
 		{v1: "1.516.JENKINS-14362-jzlib", v2: "1.516", lessThan: true},
 	}

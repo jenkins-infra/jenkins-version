@@ -11,23 +11,45 @@ import (
 )
 
 type Semver struct {
-	Major string
-	Minor string
-	Patch string
-	Other string
+	Major      string
+	Minor      string
+	Patch      string
+	Prerelease string
 }
 
 func NewVersion(in string) Semver {
+	s := Semver{}
+
+	if strings.Contains(in, "+") {
+		panic("this library does not support build numbers '" + in + "'")
+	}
+
+	if strings.Contains(in, ".JENKINS") {
+		in = strings.ReplaceAll(in, ".JENKINS", "-JENKINS")
+	}
+
+	if strings.Contains(in, "-") {
+		parts := strings.SplitN(in, "-", 2)
+		s.Prerelease = parts[1]
+		// parse the first part
+		in = parts[0]
+	}
+
 	parts := strings.Split(in, ".")
 	if len(parts) == 1 {
-		return Semver{Major: parts[0]}
+		s.Major = parts[0]
 	} else if len(parts) == 2 {
-		return Semver{Major: parts[0], Minor: parts[1]}
+		s.Major = parts[0]
+		s.Minor = parts[1]
 	} else if len(parts) == 3 {
-		return Semver{Major: parts[0], Minor: parts[1], Patch: parts[2]}
+		s.Major = parts[0]
+		s.Minor = parts[1]
+		s.Patch = parts[2]
 	} else {
-		return Semver{Major: parts[0], Minor: parts[1], Patch: parts[2], Other: parts[3]}
+		panic("invalid number of parts '" + in + "'")
 	}
+
+	return s
 }
 
 func toInt(in string) (int, error) {
@@ -46,10 +68,10 @@ func (v *Semver) String() string {
 		return v.Major
 	} else if v.Patch == "" {
 		return fmt.Sprintf("%s.%s", v.Major, v.Minor)
-	} else if v.Other == "" {
+	} else if v.Prerelease == "" {
 		return fmt.Sprintf("%s.%s.%s", v.Major, v.Minor, v.Patch)
 	} else {
-		return fmt.Sprintf("%s.%s.%s.%s", v.Major, v.Minor, v.Patch, v.Other)
+		return fmt.Sprintf("%s.%s.%s-%s", v.Major, v.Minor, v.Patch, v.Prerelease)
 	}
 }
 
@@ -57,7 +79,7 @@ func (v Semver) LessThan(o Semver) bool {
 	if v.Major != o.Major {
 		val, err := v.lessThan(v.Major, o.Major)
 		if err != nil {
-			logrus.Warnf("unable to compare '%s' & '%s'", v.String(), o.String())
+			logrus.Warnf("unable to compare '%s' & '%s' - %s", v.String(), o.String(), err)
 			return false
 		}
 		return val
@@ -66,7 +88,7 @@ func (v Semver) LessThan(o Semver) bool {
 	if v.Minor != o.Minor {
 		val, err := v.lessThan(v.Minor, o.Minor)
 		if err != nil {
-			logrus.Warnf("unable to compare '%s' & '%s'", v.String(), o.String())
+			logrus.Warnf("unable to compare '%s' & '%s' - %s", v.String(), o.String(), err)
 			return false
 		}
 		return val
@@ -75,13 +97,25 @@ func (v Semver) LessThan(o Semver) bool {
 	if v.Patch != o.Patch {
 		val, err := v.lessThan(v.Patch, o.Patch)
 		if err != nil {
-			logrus.Warnf("unable to compare '%s' & '%s'", v.String(), o.String())
+			logrus.Warnf("unable to compare '%s' & '%s' - %s", v.String(), o.String(), err)
 			return false
 		}
 		return val
 	}
 
-	return strings.Compare(v.Other, o.Other) < 0
+	if v.Prerelease == o.Prerelease {
+		return false
+	}
+
+	if v.Prerelease == "" {
+		return false
+	}
+
+	if o.Prerelease == "" {
+		return true
+	}
+
+	return strings.Compare(v.Prerelease, o.Prerelease) < 0
 }
 
 func (v Semver) lessThan(v1 string, v2 string) (bool, error) {
