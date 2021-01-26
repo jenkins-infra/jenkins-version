@@ -11,7 +11,18 @@ import (
 var (
 	short   = `Get the latest jenkins version`
 	long    = `Get the latest jenkins version by querying the maven metadata xml.`
-	example = ``
+	example = `To get the latest weekly release:
+
+    jx get [--username <username> --password <password>]
+
+To get the latest LTS release:
+
+    jx get --version-identifier lts [--username <username> --password <password>]
+
+To get the latest LTS for a particular release train:
+
+    jx get --version-identifier 2.249 [--username <username> --password <password>]
+`
 )
 
 type GetCmd struct {
