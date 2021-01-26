@@ -64,5 +64,6 @@ jobs:
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
           build-args: |
-            build_date=${{ steps.prep.outputs.build_date }}
+            build_date=${{ steps.prep.outputs.created }}
             version=${{ steps.prep.outputs.version }}
+            sha=${{ github.sha }}
