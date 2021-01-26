@@ -9,12 +9,15 @@ WORKDIR /go/src/app
 COPY . .
 RUN go get -d -v ./...
 
+ARG version
+ARG build_date
+
 RUN \
   go build -v -a \
   -ldflags "-w -s \
-    -X \"github.com/garethjevans/jenkins-version/pkg/version.BuildDate=$(date -R)\" \
+    -X \"github.com/garethjevans/jenkins-version/pkg/version.BuildDate=$build_date\" \
     -X \"github.com/garethjevans/jenkins-version/pkg/version.GoVersion=$(go version)\" \
-    -X \"github.com/garethjevans/jenkins-version/pkg/version.Version=$(git describe --tags)\"" \
+    -X \"github.com/garethjevans/jenkins-version/pkg/version.Version=$version\"" \
   -o bin/jv
 
 FROM alpine:3.12.3

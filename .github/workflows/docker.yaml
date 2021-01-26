@@ -36,7 +36,6 @@ jobs:
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=build_date::$(date -R)
-          echo ::set-output name=git_version::$(git describe --tags)
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -66,5 +65,4 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
           build_args: |
             build_date=${{ steps.prep.outputs.build_date }}
-            git_version=${{ steps.prep.outputs.git_version }}
             version=${{ steps.prep.outputs.version }}
