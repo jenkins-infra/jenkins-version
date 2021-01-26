@@ -25,6 +25,7 @@ To get the latest LTS for a particular release train:
 `
 )
 
+// GetCmd struct to hold the get command.
 type GetCmd struct {
 	Cmd  *cobra.Command
 	Args []string
@@ -35,6 +36,7 @@ type GetCmd struct {
 	Password          string
 }
 
+// NewGetCmd creates a new get command.
 func NewGetCmd() *cobra.Command {
 	c := &GetCmd{}
 	cmd := &cobra.Command{
@@ -66,6 +68,7 @@ func NewGetCmd() *cobra.Command {
 	return cmd
 }
 
+// Run runs the command.
 func (c *GetCmd) Run() error {
 	v, err := version.GetJenkinsVersion(c.URL, c.VersionIdentifier, c.Username, c.Password)
 	if err != nil {

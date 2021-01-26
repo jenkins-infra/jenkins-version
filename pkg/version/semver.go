@@ -10,6 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Semver struct to store a semver.
 type Semver struct {
 	Major      string
 	Minor      string
@@ -17,6 +18,7 @@ type Semver struct {
 	Prerelease string
 }
 
+// NewVersion creates a new Semver.
 func NewVersion(in string) Semver {
 	s := Semver{}
 
@@ -63,6 +65,7 @@ func toInt(in string) (int, error) {
 	return s, nil
 }
 
+// String string representation of this struct.
 func (v *Semver) String() string {
 	if v.Minor == "" {
 		return v.Major
@@ -75,6 +78,7 @@ func (v *Semver) String() string {
 	}
 }
 
+// LessThan returns true if this Semver is less than the supplied one.
 func (v Semver) LessThan(o Semver) bool {
 	if v.Major != o.Major {
 		val, err := v.lessThan(v.Major, o.Major)
