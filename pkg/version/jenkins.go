@@ -1,11 +1,14 @@
 package version
 
 import (
+	"encoding/base64"
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"sort"
+	"strings"
 
 	"github.com/garethjevans/jenkins-version/pkg/maven"
 
@@ -16,6 +19,10 @@ var (
 	Client HTTPClient
 	URL    = "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/maven-metadata.xml"
 )
+
+func init() {
+	Client = &http.Client{}
+}
 
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
@@ -47,14 +54,14 @@ func GetLatestVersion(versions []string) (string, error) {
 
 // GetJenkinsVersion retrieves a Jenkins version number from a maven repository.
 func GetJenkinsVersion(metadataURL string, versionIdentifier string, username string, password string) (string, error) {
-	//        if username != "":
-	//            base64string = base64.b64encode(
-	//                bytes('%s:%s' % (username, password), 'ascii'))
-	//
-	//            request.add_header(
-	//                "Authorization", "Basic %s" % base64string.decode('utf-8'))
+	headers := http.Header{}
 
-	r, err := Get(metadataURL, nil)
+	if username != "" {
+		encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", username, password)))
+		headers.Add("Authorization", fmt.Sprintf("Basic %s", encoded))
+	}
+
+	r, err := Get(metadataURL, headers)
 	if err != nil {
 		return "", err
 	}
@@ -75,33 +82,53 @@ func GetJenkinsVersion(metadataURL string, versionIdentifier string, username st
 
 	// Search in Maven repository for latest version of Jenkins
 	// that satisfies X.Y.Z which represents stable version
-
 	if versionIdentifier == "latest" {
+		logrus.Debugf("latest requested, returning metadata/versioning/latest")
 		return metadata.Versioning.Latest, nil
 	}
 
-	//        # In this case we assume that we provided a valid version
-	//        elif len(version_identifier.split('.')) > 0:
-	//            result = version_identifier
-	//            versions = root.findall('versioning/versions/version')
-	//
-	//            found = []
-	//
-	//            for version in versions:
-	//                result_array = result.split('.')
-	//                version_array = version.text.split('.')
-	//                if len(version_array) >= len(result_array):
-	//                    if result_array[:] == version_array[0:len(result_array)] and len(result_array) > 0:
-	//                        found.append(version.text)
-	//
-	//            result = get_latest_version(found)
-	//
-	//        else:
-	//            print("Something went wrong with version: {}".format(version))
-	//            sys.exit(1)
-	//
-	//        return result
-	return GetLatestVersion(metadata.Versioning.Versions.Versions)
+	if versionIdentifier == "lts" {
+		found := filter(metadata.Versioning.Versions.Versions, func(s string) bool {
+			v := NewVersion(s)
+			return v.Patch != ""
+		})
+		logrus.Debugf("lts requested, filtered list to %s", found)
+		return GetLatestVersion(found)
+	}
+
+	splitIdentifier := strings.Split(versionIdentifier, ".")
+	if len(splitIdentifier) > 0 {
+		id := NewVersion(versionIdentifier)
+		// In this case we assume that we provided a valid version
+		found := filter(metadata.Versioning.Versions.Versions, func(s string) bool {
+			v := NewVersion(s)
+
+			switch len(splitIdentifier) {
+			case 1:
+				return id.Major == v.Major
+			case 2:
+				return id.Major == v.Major && id.Minor == v.Minor
+			case 3:
+				return id.Major == v.Major && id.Minor == v.Minor && id.Patch == v.Patch
+			default:
+				return false
+			}
+		})
+
+		logrus.Debugf("%s requested, filtered list to %s", versionIdentifier, found)
+		return GetLatestVersion(found)
+	}
+
+	return "", errors.New("something went wrong with version " + versionIdentifier)
+}
+
+func filter(ss []string, test func(string) bool) (ret []string) {
+	for _, s := range ss {
+		if test(s) {
+			ret = append(ret, s)
+		}
+	}
+	return
 }
 
 /*
