@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/garethjevans/jenkins-version/pkg/version"
 	"github.com/sirupsen/logrus"
@@ -9,9 +10,9 @@ import (
 )
 
 var (
-	short   = `Get the latest jenkins version`
-	long    = `Get the latest jenkins version by querying the maven metadata xml.`
-	example = `To get the latest weekly release:
+	getShort   = `Get the latest jenkins version`
+	getLong    = `Get the latest jenkins version by querying the maven metadata xml.`
+	getExample = `To get the latest weekly release:
 
     jv get [--username <username> --password <password>]
 
@@ -41,9 +42,9 @@ func NewGetCmd() *cobra.Command {
 	c := &GetCmd{}
 	cmd := &cobra.Command{
 		Use:     "get",
-		Short:   short,
-		Long:    long,
-		Example: example,
+		Short:   getShort,
+		Long:    getLong,
+		Example: getExample,
 		Aliases: []string{"g"},
 		Run: func(cmd *cobra.Command, args []string) {
 			c.Cmd = cmd
@@ -68,8 +69,35 @@ func NewGetCmd() *cobra.Command {
 	return cmd
 }
 
+func (c *GetCmd) setupEnvironmentVariables() {
+	username := os.Getenv("MAVEN_REPOSITORY_USERNAME")
+	if username != "" {
+		logrus.Debugf("overriding username from env var MAVEN_REPOSITORY_USERNAME")
+		c.Username = username
+	}
+
+	password := os.Getenv("MAVEN_REPOSITORY_PASSWORD")
+	if password != "" {
+		logrus.Debugf("overriding password from env var MAVEN_REPOSITORY_PASSWORD")
+		c.Password = password
+	}
+
+	versionIdentifier := os.Getenv("JENKINS_VERSION")
+	if versionIdentifier != "" {
+		logrus.Debugf("overriding version identifier from env var JENKINS_VERSION")
+		c.VersionIdentifier = versionIdentifier
+	}
+
+	downloadURL := os.Getenv("JENKINS_DOWNLOAD_URL")
+	if downloadURL != "" {
+		logrus.Debugf("overriding download url from env var JENKINS_DOWNLOAD_URL")
+		c.URL = fmt.Sprintf("%smaven-metadata.xml", downloadURL)
+	}
+}
+
 // Run runs the command.
 func (c *GetCmd) Run() error {
+	c.setupEnvironmentVariables()
 	v, err := version.GetJenkinsVersion(c.URL, c.VersionIdentifier, c.Username, c.Password)
 	if err != nil {
 		return err
