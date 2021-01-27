@@ -2,10 +2,6 @@ FROM --platform=${BUILDPLATFORM} golang:1.15-alpine AS builder
 
 ARG TARGETOS
 ARG TARGETARCH
-
-# Install TARGETPLATFORM parser to translate its value to GOOS, GOARCH, and GOARM
-# COPY --from=tonistiigi/xx:golang / /
-# Bring TARGETPLATFORM to the build scope
 ARG TARGETPLATFORM
 
 WORKDIR /go/src/app
