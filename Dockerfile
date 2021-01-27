@@ -15,13 +15,11 @@ ENV CGO_ENABLED=0
 
 RUN go version
 
-RUN GOOS=$TARGETOS GOARCH=$TARGETARCH make build
-
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -v -a \
   -ldflags "-w -s \
     -X github.com/garethjevans/jenkins-version/pkg/version.BuildDate=$build_date \
     -X github.com/garethjevans/jenkins-version/pkg/version.Version=$version \
-    -X github.com/garethjevans/jenkins-version/pkg/version.GoVersion=\'"$(go version)"\' \
+    -X github.com/garethjevans/jenkins-version/pkg/version.GoVersion=\'\' \
     -X github.com/garethjevans/jenkins-version/pkg/version.Sha1=$sha" \
   -o bin/jv cmd/jv/jv.go
 
