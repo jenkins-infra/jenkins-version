@@ -60,6 +60,7 @@ func init() {
 	})
 
 	RootCmd.AddCommand(cmd.NewGetCmd())
+	RootCmd.AddCommand(cmd.NewDownloadCmd())
 
 	RootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		if Verbose {

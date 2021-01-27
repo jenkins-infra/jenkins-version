@@ -16,5 +16,6 @@ a simple CLI to query the latest jenkins version.
 
 ### SEE ALSO
 
+* [jv download](jv_download.md)	 - Get the latest jenkins version
 * [jv get](jv_get.md)	 - Get the latest jenkins version
 

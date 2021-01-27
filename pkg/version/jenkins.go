@@ -5,8 +5,10 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"sort"
 	"strings"
 
@@ -19,7 +21,7 @@ var (
 	// Client the http client wrapper.
 	Client HTTPClient
 	// URL the default url to query.
-	URL = "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/maven-metadata.xml"
+	URL = "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/"
 )
 
 func init() {
@@ -39,6 +41,32 @@ func Get(url string, headers http.Header) (*http.Response, error) {
 	}
 	request.Header = headers
 	return Client.Do(request)
+}
+
+// Download sends a get request to the URL.
+func Download(url string, headers http.Header, path string) (*http.Response, error) {
+	request, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+	request.Header = headers
+	resp, err := Client.Do(request)
+
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Create the file
+	out, err := os.Create(path)
+	if err != nil {
+		return nil, err
+	}
+	defer out.Close()
+
+	// Write the body to file
+	_, err = io.Copy(out, resp.Body)
+	return nil, err
 }
 
 // GetLatestVersion  takes a list of Jenkins versions then returns the latest one.
@@ -134,70 +162,33 @@ func filter(ss []string, test func(string) bool) (ret []string) {
 	return
 }
 
-/*
-def download_jenkins(url, username, password, version, path):
-    ''' download_jenkins download locally a jenkins.war'''
+// DownloadJenkins download locally a jenkins.war.
+func DownloadJenkins(url string, username string, password string, version string, path string) error {
+	downloadURL := fmt.Sprintf("%s%s/jenkins-war-%s.war", url, version, version)
+	logrus.Infof("Downloading version %s from %s ", version, downloadURL)
 
-    download_url = url + f'{version}/jenkins-war-{version}.war'
+	headers := http.Header{}
 
-    print("Downloading version {} from {} ".format(version, download_url))
+	if username != "" {
+		encoded := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", username, password)))
+		headers.Add("Authorization", fmt.Sprintf("Basic %s", encoded))
+	}
 
-    try:
-        request = urllib.request.Request(download_url)
+	_, err := Download(downloadURL, headers, path)
+	if err != nil {
+		return err
+	}
 
-        if username != "":
-            base64string = base64.b64encode(
-                bytes('%s:%s' % (username, password), 'ascii'))
+	logrus.Infof("War downloaded to %s", path)
 
-            request.add_header(
-                "Authorization", "Basic %s" % base64string.decode('utf-8'))
+	fi, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+	// get the size
+	size := fi.Size()
 
-        response = urllib.request.urlopen(request)
-        content = response.read()
+	logrus.Infof("downloaded %s", ByteCountBinary(size))
 
-        open(path, 'wb').write(content)
-
-        print("War downloaded to {}".format(path))
-
-    except URLError as err:
-        print(type(err))
-        sys.exit(1)
-
-
-def main():
-
-    username = os.environ.get('MAVEN_REPOSITORY_USERNAME', '')
-    password = os.environ.get('MAVEN_REPOSITORY_PASSWORD', '')
-
-    path = os.environ.get('WAR', '/tmp/jenkins.war')
-
-    url = os.environ.get(
-        'JENKINS_DOWNLOAD_URL',
-        'https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/jenkins-war/')
-
-    version = get_jenkins_version(
-        url + 'maven-metadata.xml',
-        os.environ.get('JENKINS_VERSION', 'latest'),
-        username,
-        password
-        )
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-v",
-        "--version",
-        help="Only Show Jenkins version",
-        action="store_true")
-
-    args = parser.parse_args()
-
-    if args.version:
-        print(f"{version}")
-        sys.exit(0)
-
-    download_jenkins(url, username, password, version, path)
-
-
-if __name__ == "__main__":
-    main()
-*/
+	return nil
+}
