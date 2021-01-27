@@ -23,19 +23,19 @@ docker run -it garethjevans/jv
 To get the latest weekly release:
 
 ```
-jx get [--username <username> --password <password>]
+jv get [--username <username> --password <password>]
 ```
 
 To get the latest LTS release:
 
 ```
-jx get --version-identifier lts [--username <username> --password <password>]
+jv get --version-identifier lts [--username <username> --password <password>]
 ```
 
 To get the latest LTS for a particular release train:
 
 ```
-jx get --version-identifier 2.249 [--username <username> --password <password>]
+jv get --version-identifier 2.249 [--username <username> --password <password>]
 ```
 
 ## Documentation
