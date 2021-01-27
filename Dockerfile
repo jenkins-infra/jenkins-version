@@ -15,6 +15,8 @@ ENV CGO_ENABLED=0
 
 RUN go version
 
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH make build
+
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -v -a \
   -ldflags "-w -s \
     -X github.com/garethjevans/jenkins-version/pkg/version.BuildDate=$build_date \
