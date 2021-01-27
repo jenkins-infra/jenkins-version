@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	getShort   = `Get the latest jenkins version`
-	getLong    = `Get the latest jenkins version by querying the maven metadata xml.`
-	getExample = `To get the latest weekly release:
+	downloadShort   = `Get the latest jenkins version`
+	downloadLong    = `Get the latest jenkins version by querying the maven metadata xml.`
+	downloadExample = `To get the latest weekly release:
 
     jv get [--username <username> --password <password>]
 
@@ -26,8 +26,8 @@ To get the latest LTS for a particular release train:
 `
 )
 
-// GetCmd struct to hold the get command.
-type GetCmd struct {
+// DownloadCmd struct to hold the get command.
+type DownloadCmd struct {
 	Cmd  *cobra.Command
 	Args []string
 
@@ -35,17 +35,18 @@ type GetCmd struct {
 	VersionIdentifier string
 	Username          string
 	Password          string
+	War               string
 }
 
-// NewGetCmd creates a new get command.
-func NewGetCmd() *cobra.Command {
-	c := &GetCmd{}
+// NewDownloadCmd creates a new get command.
+func NewDownloadCmd() *cobra.Command {
+	c := &DownloadCmd{}
 	cmd := &cobra.Command{
-		Use:     "get",
-		Short:   getShort,
-		Long:    getLong,
-		Example: getExample,
-		Aliases: []string{"g"},
+		Use:     "download",
+		Short:   downloadShort,
+		Long:    downloadLong,
+		Example: downloadExample,
+		Aliases: []string{"d"},
 		Run: func(cmd *cobra.Command, args []string) {
 			c.Cmd = cmd
 			c.Args = args
@@ -65,11 +66,13 @@ func NewGetCmd() *cobra.Command {
 		"Password to use (envVar: MAVEN_REPOSITORY_PASSWORD)")
 	cmd.Flags().StringVarP(&c.VersionIdentifier, "version-identifier", "i", "latest",
 		"The version identifier (envVar: JENKINS_VERSION)")
+	cmd.Flags().StringVarP(&c.War, "war", "w", "/tmp/jenkins.war",
+		"The location to download the war file to (envVar: WAR)")
 
 	return cmd
 }
 
-func (c *GetCmd) setupEnvironmentVariables() {
+func (c *DownloadCmd) setupEnvironmentVariables() {
 	username := os.Getenv("MAVEN_REPOSITORY_USERNAME")
 	if username != "" {
 		logrus.Debugf("overriding username from env var MAVEN_REPOSITORY_USERNAME")
@@ -93,15 +96,26 @@ func (c *GetCmd) setupEnvironmentVariables() {
 		logrus.Debugf("overriding download url from env var JENKINS_DOWNLOAD_URL")
 		c.URL = downloadURL
 	}
+
+	war := os.Getenv("WAR")
+	if war != "" {
+		logrus.Debugf("overriding war from env var WAR")
+		c.War = war
+	}
 }
 
 // Run runs the command.
-func (c *GetCmd) Run() error {
+func (c *DownloadCmd) Run() error {
 	c.setupEnvironmentVariables()
 	v, err := version.GetJenkinsVersion(fmt.Sprintf("%smaven-metadata.xml", c.URL), c.VersionIdentifier, c.Username, c.Password)
 	if err != nil {
 		return err
 	}
-	fmt.Println(v)
+
+	err = version.DownloadJenkins(c.URL, c.Username, c.Password, v, c.War)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
