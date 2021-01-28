@@ -30,16 +30,21 @@ To get the latest LTS for a particular release train:
 type GetCmd struct {
 	Cmd  *cobra.Command
 	Args []string
+	Log  Logs
 
-	URL               string
-	VersionIdentifier string
-	Username          string
-	Password          string
+	URL                string
+	VersionIdentifier  string
+	Username           string
+	Password           string
+	GithubActionOutput bool
 }
 
 // NewGetCmd creates a new get command.
 func NewGetCmd() *cobra.Command {
 	c := &GetCmd{}
+
+	c.Log = c
+
 	cmd := &cobra.Command{
 		Use:     "get",
 		Short:   getShort,
@@ -65,6 +70,8 @@ func NewGetCmd() *cobra.Command {
 		"Password to use (envVar: MAVEN_REPOSITORY_PASSWORD)")
 	cmd.Flags().StringVarP(&c.VersionIdentifier, "version-identifier", "i", "latest",
 		"The version identifier (envVar: JENKINS_VERSION)")
+	cmd.Flags().BoolVarP(&c.GithubActionOutput, "github-action-output", "", false,
+		"Set an output for a Github Action")
 
 	return cmd
 }
@@ -102,6 +109,20 @@ func (c *GetCmd) Run() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(v)
+
+	if c.GithubActionOutput {
+		c.Log.Println(fmt.Sprintf("::set-output name=jenkins_version::%s", v))
+	} else {
+		c.Log.Println(v)
+	}
+
 	return nil
+}
+
+type Logs interface {
+	Println(message string)
+}
+
+func (c *GetCmd) Println(message string) {
+	fmt.Println(message)
 }
