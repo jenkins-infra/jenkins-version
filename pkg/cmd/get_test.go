@@ -42,7 +42,8 @@ func TestGet(t *testing.T) {
 			c.GithubActionOutput = tc.githubAction
 			err := c.Run()
 			assert.NoError(t, err)
-			assert.Equal(t, tc.expected, m.message)
+			assert.Equal(t, 1, len(m.messages))
+			assert.Equal(t, tc.expected, m.messages[0])
 		})
 	}
 }
@@ -64,9 +65,9 @@ func stubWithFixture(t *testing.T, file string) {
 }
 
 type LoggerMock struct {
-	message string
+	messages []string
 }
 
 func (l *LoggerMock) Println(message string) {
-	l.message = message
+	l.messages = append(l.messages, message)
 }
