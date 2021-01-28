@@ -15,7 +15,7 @@ brew install jv
 This can be used a docker container with the following:
 
 ```
-docker run -it garethjevans/jv
+docker run -it garethjevans/jv:main
 ```
 
 ## Usage
