@@ -22,7 +22,7 @@ RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -v -a \
     -X github.com/garethjevans/jenkins-version/pkg/version.Sha1=$sha" \
   -o bin/jv cmd/jv/jv.go
 
-FROM alpine:3.12.3
+FROM --platform=${BUILDPLATFORM} alpine:3.12.3
 
 LABEL maintainer="Gareth Evans <gareth@bryncynfelin.co.uk>"
 COPY --from=builder /go/src/app/bin/jv /usr/bin/jv
