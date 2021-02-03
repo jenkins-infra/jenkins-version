@@ -17,6 +17,8 @@ builds:
     goarch:
       - amd64
       - arm64
+      - ppc64le
+      - s390x
 
   - id: jv-darwin
     main: ./cmd/jv/jv.go
