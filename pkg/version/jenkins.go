@@ -113,12 +113,12 @@ func GetJenkinsVersion(metadataURL string, versionIdentifier string, username st
 
 	// Search in Maven repository for latest version of Jenkins
 	// that satisfies X.Y.Z which represents stable version
-	if versionIdentifier == "latest" {
+	if versionIdentifier == "latest" || versionIdentifier == "weekly" {
 		logrus.Debugf("latest requested, returning metadata/versioning/latest")
 		return metadata.Versioning.Latest, nil
 	}
 
-	if versionIdentifier == "lts" {
+	if versionIdentifier == "lts" || versionIdentifier == "stable" {
 		found := filter(metadata.Versioning.Versions.Versions, func(s string) bool {
 			v := NewVersion(s)
 			return v.Patch != ""

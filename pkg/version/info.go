@@ -4,6 +4,7 @@ package version
 var (
 	Version   string
 	BuildDate string
-	Sha1      string
+	Revision  string
 	GoVersion string
+	BuiltBy   string
 )

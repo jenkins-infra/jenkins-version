@@ -25,8 +25,12 @@ func TestGet(t *testing.T) {
 	tests := []test{
 		{versionIdentifier: "latest", githubAction: false, expected: "2.276"},
 		{versionIdentifier: "latest", githubAction: true, expected: "::set-output name=jenkins_version::2.276"},
+		{versionIdentifier: "weekly", githubAction: false, expected: "2.276"},
+		{versionIdentifier: "weekly", githubAction: true, expected: "::set-output name=jenkins_version::2.276"},
 		{versionIdentifier: "lts", githubAction: false, expected: "2.263.3"},
 		{versionIdentifier: "lts", githubAction: true, expected: "::set-output name=jenkins_version::2.263.3"},
+		{versionIdentifier: "stable", githubAction: false, expected: "2.263.3"},
+		{versionIdentifier: "stable", githubAction: true, expected: "::set-output name=jenkins_version::2.263.3"},
 	}
 
 	for _, tc := range tests {
