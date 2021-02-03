@@ -5,7 +5,7 @@ ARG TARGETARCH
 ARG TARGETPLATFORM
 
 LABEL maintainer="Gareth Evans <gareth@bryncynfelin.co.uk>"
-COPY dist/jv-$TARGETARCH_$TARGETARCH_$TARGETOS/jv /usr/bin/jv
+COPY dist/jv-${TARGETOS}_${TARGETOS}_${TARGETARCH}/jv /usr/bin/jv
 
 ENTRYPOINT [ "/usr/bin/jv" ]
 
