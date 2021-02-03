@@ -11,7 +11,7 @@ builds:
     main: ./cmd/jv/jv.go
     binary: jv
     ldflags:
-      - -X github.com/garethjevans/jv/pkg/version.Version={{.Version}} -X github.com/garethjevans/updatecenter/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/updatecenter/pkg/version.BuildDate={{.CommitDate}}
+      - -X github.com/garethjevans/jenkins-version/pkg/version.Version={{.Version}} -X github.com/garethjevans/jenkins-version/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/jenkins-version/pkg/version.BuildDate={{.CommitDate}} -X github.com/garethjevans/jenkins-version/pkg/version.BuiltBy=goreleaser
     goos:
       - linux
     goarch:
@@ -22,7 +22,7 @@ builds:
     main: ./cmd/jv/jv.go
     binary: jv
     ldflags:
-      - -X github.com/garethjevans/jv/pkg/version.Version={{.Version}} -X github.com/garethjevans/updatecenter/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/updatecenter/pkg/version.BuildDate={{.CommitDate}}
+      - -X github.com/garethjevans/jenkins-version/pkg/version.Version={{.Version}} -X github.com/garethjevans/jenkins-version/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/jenkins-version/pkg/version.BuildDate={{.CommitDate}} -X github.com/garethjevans/jenkins-version/pkg/version.BuiltBy=goreleaser
     goos:
       - darwin
     goarch:
@@ -33,7 +33,7 @@ builds:
     main: ./cmd/jv/jv.go
     binary: jv
     ldflags:
-      - -X github.com/garethjevans/updatecenter/pkg/version.Version={{.Version}} -X github.com/garethjevans/updatecenter/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/updatecenter/pkg/version.BuildDate={{.CommitDate}}
+      - -X github.com/garethjevans/jenkins-version/pkg/version.Version={{.Version}} -X github.com/garethjevans/jenkins-version/pkg/version.Revision={{.ShortCommit}} -X github.com/garethjevans/jenkins-version/pkg/version.BuildDate={{.CommitDate}} -X github.com/garethjevans/jenkins-version/pkg/version.BuiltBy=goreleaser
     goos:
       - windows
     goarch:

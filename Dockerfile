@@ -19,7 +19,8 @@ RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -v -a \
   -ldflags "-w -s \
     -X github.com/garethjevans/jenkins-version/pkg/version.BuildDate=$build_date \
     -X github.com/garethjevans/jenkins-version/pkg/version.Version=$version \
-    -X github.com/garethjevans/jenkins-version/pkg/version.Sha1=$sha" \
+    -X github.com/garethjevans/jenkins-version/pkg/version.Revision=$sha \
+    -X github.com/garethjevans/jenkins-version/pkg/version.BuiltBy=docker" \
   -o bin/jv cmd/jv/jv.go
 
 FROM --platform=${BUILDPLATFORM} alpine:3.13.0
