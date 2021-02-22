@@ -6,7 +6,7 @@ ARG TARGETPLATFORM
 
 LABEL maintainer="Gareth Evans <gareth@bryncynfelin.co.uk>"
 COPY dist/jv-${TARGETOS}_${TARGETOS}_${TARGETARCH}/jv /usr/bin/jv
-COPY github-actions-entrypoint.sh /usr/bin
+COPY github-actions-entrypoint.sh /usr/bin/github-actions-entrypoint.sh
 
 ENTRYPOINT [ "/usr/bin/jv" ]
 
