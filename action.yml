@@ -14,7 +14,7 @@ outputs:
     description: 'The latest release version of Jenkins'
 runs:
   using: 'docker'
-  image: 'docker://garethjevans/jenkins-version:0.0.9'
+  image: 'docker://garethjevans/jenkins-version:0.0.10'
   entrypoint: 'github-actions-entrypoint.sh'
   env:
     JENKINS_VERSION: ${{ inputs.version-identifier }}
