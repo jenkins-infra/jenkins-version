@@ -1,0 +1,20 @@
+---
+name: 'jenkins-version'
+description: 'https://github.com/garethjevans/jenkins-version'
+branding:
+  icon: 'tag'
+  color: 'blue'
+inputs:
+  version-identifier:
+    description: 'The strategy to detect the release line of jenkins: latest, lts'
+    required: false
+    default: 'lts'
+outputs:
+  jenkins_version:
+    description: 'The latest release version of Jenkins'
+runs:
+  using: 'docker'
+  image: 'docker://garethjevans/jenkins-version:0.0.9'
+  entrypoint: 'github-actions-entrypoint.sh'
+  env:
+    JENKINS_VERSION: ${{ inputs.version-identifier }}
