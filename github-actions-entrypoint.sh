@@ -1,3 +1,3 @@
 #!/bin/sh -le
 
-jv --github-action-output
+jv get --github-action-output
