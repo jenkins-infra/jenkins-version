@@ -8,4 +8,4 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
-      - uses: garethjevans/jenkins-version@0.0.11
+      - uses: garethjevans/jenkins-version
