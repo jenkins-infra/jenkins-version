@@ -70,3 +70,5 @@ brews:
       email: gareth@bryncynfelin.co.uk
     folder: Formula
     description: "Determine a Jenkins Version"
+    install: |
+      bin.install "jv"
