@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/garethjevans/jenkins-version/pkg/version/mocks"
+	"github.com/jenkins-infra/jenkins-version/pkg/version/mocks"
 
-	"github.com/garethjevans/jenkins-version/pkg/version"
+	"github.com/jenkins-infra/jenkins-version/pkg/version"
 	"github.com/stretchr/testify/assert"
 )
 

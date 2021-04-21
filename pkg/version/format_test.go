@@ -5,7 +5,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/garethjevans/jenkins-version/pkg/version"
+	"github.com/jenkins-infra/jenkins-version/pkg/version"
 	"github.com/stretchr/testify/assert"
 )
 

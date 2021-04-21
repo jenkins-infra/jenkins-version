@@ -5,7 +5,7 @@ ARG TARGETARCH
 ARG TARGETPLATFORM
 ARG JV_VERSION
 
-RUN curl -L -o /tmp/jv-${TARGETOS}-${TARGETARCH}.tar.gz https://github.com/garethjevans/jenkins-version/releases/download/${JV_VERSION}/jenkins-version-${TARGETOS}-${TARGETARCH}.tar.gz && \
+RUN curl -L -o /tmp/jv-${TARGETOS}-${TARGETARCH}.tar.gz https://github.com/jenkins-infra/jenkins-version/releases/download/${JV_VERSION}/jenkins-version-${TARGETOS}-${TARGETARCH}.tar.gz && \
       tar -xvzf /tmp/jv-${TARGETOS}-${TARGETARCH}.tar.gz -C /tmp && \
       chmod a+x /tmp/jv
 
