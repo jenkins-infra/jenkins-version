@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/garethjevans/jenkins-version/pkg/version"
+	"github.com/jenkins-infra/jenkins-version/pkg/version"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

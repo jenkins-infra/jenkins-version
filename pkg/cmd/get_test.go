@@ -8,10 +8,10 @@ import (
 	"path"
 	"testing"
 
-	"github.com/garethjevans/jenkins-version/pkg/cmd"
-	"github.com/garethjevans/jenkins-version/pkg/version/mocks"
+	"github.com/jenkins-infra/jenkins-version/pkg/cmd"
+	"github.com/jenkins-infra/jenkins-version/pkg/version/mocks"
 
-	"github.com/garethjevans/jenkins-version/pkg/version"
+	"github.com/jenkins-infra/jenkins-version/pkg/version"
 	"github.com/stretchr/testify/assert"
 )
 

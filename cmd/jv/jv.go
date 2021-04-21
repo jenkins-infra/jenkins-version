@@ -6,9 +6,9 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/garethjevans/jenkins-version/pkg/cmd"
+	"github.com/jenkins-infra/jenkins-version/pkg/cmd"
 
-	"github.com/garethjevans/jenkins-version/pkg/version"
+	"github.com/jenkins-infra/jenkins-version/pkg/version"
 
 	"github.com/sirupsen/logrus"
 
