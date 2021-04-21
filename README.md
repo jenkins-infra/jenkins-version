@@ -3,7 +3,11 @@
 
 # jenkins-version
 
-a small CLI that can be used to determine the latest jenkins verision from maven metadata
+The goal of this tool is to provide a small, simple CLI that can be used to determine the latest Jenkins version, whether that be in the stable or weekly release train, from maven metadata.
+
+This is designed to used in scripts / automation and even github actions to determine that a new Jenkins release is available.
+
+This replaces a python script (getJenkinsVersion.py) that was used to similar but was difficult to distribute.
 
 ## To Install
 
