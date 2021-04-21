@@ -3,9 +3,9 @@ NAME := jv
 BINARY_NAME := jv
 GO := GO111MODULE=on GO15VENDOREXPERIMENT=1 go
 GO_NOMOD := GO111MODULE=off go
-PACKAGE_NAME := github.com/garethjevans/jenkins-version
-ROOT_PACKAGE := github.com/garethjevans/jenkins-version
-ORG := garethjevans
+PACKAGE_NAME := github.com/jenkins-infra/jenkins-version
+ROOT_PACKAGE := github.com/jenkins-infra/jenkins-version
+ORG := jenkins-infra
 
 # set dev version unless VERSION is explicitly set via environment
 VERSION ?= $(shell echo "$$(git describe --abbrev=0 --tags 2>/dev/null)-dev+$(REV)" | sed 's/^v//')

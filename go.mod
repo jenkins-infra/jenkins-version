@@ -1,4 +1,4 @@
-module github.com/garethjevans/jenkins-version
+module github.com/jenkins-infra/jenkins-version
 
 go 1.15
 

@@ -12,7 +12,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/garethjevans/jenkins-version/pkg/maven"
+	"github.com/jenkins-infra/jenkins-version/pkg/maven"
 
 	"github.com/sirupsen/logrus"
 )

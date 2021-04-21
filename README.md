@@ -1,5 +1,5 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/garethjevans/jenkins-version)](https://goreportcard.com/report/github.com/garethjevans/jenkins-version)
-[![Downloads](https://img.shields.io/github/downloads/garethjevans/jenkins-version/total.svg)]()
+[![Go Report Card](https://goreportcard.com/badge/github.com/jenkins-infra/jenkins-version)](https://goreportcard.com/report/github.com/jenkins-infra/jenkins-version)
+[![Downloads](https://img.shields.io/github/downloads/jenkins-infra/jenkins-version/total.svg)]()
 
 # jenkins-version
 
@@ -8,14 +8,14 @@ a small CLI that can be used to determine the latest jenkins verision from maven
 ## To Install
 
 ```
-brew tap garethjevans/tap
+brew tap jenkins-infra/tap
 brew install jv
 ```
 
 This can be used a docker container with the following:
 
 ```
-docker run -it garethjevans/jv:main
+docker run -it jenkins-infra/jv:main
 ```
 
 ## Usage
