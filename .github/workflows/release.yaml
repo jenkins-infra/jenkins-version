@@ -69,9 +69,10 @@ jobs:
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2.4.1
         with:
-          token: ${{ steps.generate-token.outputs.token }}
           version: latest
           args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
