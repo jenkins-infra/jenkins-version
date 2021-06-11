@@ -10,9 +10,9 @@ import (
 )
 
 var (
-	getShort   = `Get the latest jenkins version`
-	getLong    = `Get the latest jenkins version by querying the maven metadata xml.`
-	getExample = `To get the latest weekly release:
+	getShort   = `Print the latest jenkins version`
+	getLong    = `Print the latest jenkins version by querying the maven metadata xml.`
+	getExample = `To print the latest weekly release:
 
     jv get [--username <username> --password <password>]
 

@@ -1,10 +1,10 @@
 ## jv get
 
-Get the latest jenkins version
+Print the latest jenkins version
 
 ### Synopsis
 
-Get the latest jenkins version by querying the maven metadata xml.
+Print the latest jenkins version by querying the maven metadata xml.
 
 ```
 jv get [flags]
@@ -13,7 +13,7 @@ jv get [flags]
 ### Examples
 
 ```
-To get the latest weekly release:
+To print the latest weekly release:
 
     jv get [--username <username> --password <password>]
 

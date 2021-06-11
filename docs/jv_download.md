@@ -1,10 +1,10 @@
 ## jv download
 
-Get the latest jenkins version
+Download the latest jenkins version
 
 ### Synopsis
 
-Get the latest jenkins version by querying the maven metadata xml.
+Download the latest jenkins version by querying the maven metadata xml.
 
 ```
 jv download [flags]
@@ -13,17 +13,17 @@ jv download [flags]
 ### Examples
 
 ```
-To get the latest weekly release:
+To download the latest weekly release:
 
-    jv get [--username <username> --password <password>]
+    jv download [--username <username> --password <password>]
 
-To get the latest LTS release:
+To download the latest LTS release:
 
-    jv get --version-identifier lts [--username <username> --password <password>]
+    jv download --version-identifier lts [--username <username> --password <password>]
 
-To get the latest LTS for a particular release train:
+To download the latest LTS for a particular release train:
 
-    jv get --version-identifier 2.249 [--username <username> --password <password>]
+    jv download --version-identifier 2.249 [--username <username> --password <password>]
 
 ```
 

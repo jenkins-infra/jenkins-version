@@ -59,3 +59,9 @@ To test:
 ```
 make test
 ```
+
+To generate the documentation:
+
+```
+make docs
+```
