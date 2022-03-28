@@ -9,7 +9,7 @@ RUN curl -L -o /tmp/jv-${TARGETOS}-${TARGETARCH}.tar.gz https://github.com/jenki
       tar -xvzf /tmp/jv-${TARGETOS}-${TARGETARCH}.tar.gz -C /tmp && \
       chmod a+x /tmp/jv
 
-FROM --platform=${BUILDPLATFORM} alpine:3.15.1
+FROM --platform=${BUILDPLATFORM} alpine:3.15.2
 LABEL maintainer="Gareth Evans <gareth@bryncynfelin.co.uk>"
 
 COPY --from=build-stage0 /tmp/jv /usr/bin/jv
