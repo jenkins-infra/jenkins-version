@@ -33,14 +33,14 @@ linters-settings:
       - wrapperFunc
   gocyclo:
     min-complexity: 30
-  goimports:
-  golint:
+  goimports: {}
+  revive:
     min-confidence: 0
   gomnd:
     settings:
       mnd:
         # don't include the "operation" and "assign"
-        checks: argument,case,condition,return
+        checks: ["argument", "case" ,"condition" ,"return"]
   govet:
     check-shadowing: true
     settings:
@@ -53,9 +53,9 @@ linters-settings:
           - (github.com/jenkins-x/jx-logging/pkg/log/Logger()).Fatalf
   lll:
     line-length: 140
-  maligned:
+  fieldalignment:
     suggest-new: true
-  misspell:
+  misspell: {}
   nolintlint:
     allow-leading-space: true # don't require machine-readable nolint directives (i.e. with no leading space)
     allow-unused: false # report any unused nolint directives
@@ -78,27 +78,22 @@ linters:
     - godot
     - gofmt
     - goimports
-    - golint
     - goprintffuncname
     - gosec
     - gosimple
     - ineffassign
-    - interfacer
     - lll
-    - maligned
     - misspell
     - nakedret
     - nolintlint
-    - rowserrcheck
-    - structcheck
+    - revive
     - stylecheck
+    - testpackage
     - typecheck
     - unconvert
-    - unparam
     - unused
     - varcheck
     - whitespace
-    - testpackage
   # don't enable:
   # - bodyclose https://github.com/timakin/bodyclose/issues/30
   # - gochecknoinits
