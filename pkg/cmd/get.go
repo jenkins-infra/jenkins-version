@@ -111,7 +111,7 @@ func (c *GetCmd) Run() error {
 	}
 
 	if c.GithubActionOutput {
-		c.Log.Println(fmt.Sprintf("jenkins_version=%s >> $GITHUB_OUTPUT", v))
+		c.Log.Println(fmt.Sprintf("jenkins_version=%s", v))
 	} else {
 		c.Log.Println(v)
 	}
