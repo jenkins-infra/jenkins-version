@@ -35,13 +35,22 @@ targets:
       key: $.jobs.build.steps[0].with.go-version
     scmid: default
   updateGithubWorkflowGolangCiLint:
-    name: 'Update Golang version in GitHub "golangcilint" workflow to {{ source "latestGoVersion" }}'
+    name: 'Update Golang version in GitHub "golangci-lint" workflow to {{ source "latestGoVersion" }}'
     sourceid: latestGoVersion
     kind: yaml
     spec:
       file: .github/workflows/golangci-lint.yml
       key: $.jobs.golangci.steps[1].with.go-version
     scmid: default
+  updateGithubWorkflowRelease:
+    name: 'Update Golang version in GitHub "release" workflow to {{ source "latestGoVersion" }}'
+    sourceid: latestGoVersion
+    kind: yaml
+    spec:
+      file: .github/workflows/golangci-lint.yml
+      key: $.jobs.release.steps[1].with.go-version
+    scmid: default
+
 
 actions:
   default:
