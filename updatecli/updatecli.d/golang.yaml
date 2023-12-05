@@ -47,7 +47,7 @@ targets:
     sourceid: latestGoVersion
     kind: yaml
     spec:
-      file: .github/workflows/golangci-lint.yml
+      file: .github/workflows/release.yaml
       key: $.jobs.release.steps[1].with.go-version
     scmid: default
 
