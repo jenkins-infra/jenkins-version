@@ -73,9 +73,8 @@ func (v *Semver) String() string {
 		return fmt.Sprintf("%s.%s", v.Major, v.Minor)
 	} else if v.Prerelease == "" {
 		return fmt.Sprintf("%s.%s.%s", v.Major, v.Minor, v.Patch)
-	} else {
-		return fmt.Sprintf("%s.%s.%s-%s", v.Major, v.Minor, v.Patch, v.Prerelease)
 	}
+	return fmt.Sprintf("%s.%s.%s-%s", v.Major, v.Minor, v.Patch, v.Prerelease)
 }
 
 // LessThan returns true if this Semver is less than the supplied one.
