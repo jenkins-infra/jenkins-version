@@ -1,0 +1,54 @@
+---
+name: Bump Golang version
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  latestGoVersion:
+      name: Get latest Golang version
+      kind: golang
+
+targets:
+  updateGomod:
+    name: 'Update Golang version in go.mod to {{ source "latestGoVersion" }}'
+    kind: golang/gomod
+    sourceid: latestGoVersion
+    spec:
+      file: go.mod
+    scmid: default
+  updateGithubWorkflowGolang:
+    name: 'Update Golang version in GitHub "go" workflow to {{ source "latestGoVersion" }}'
+    sourceid: latestGoVersion
+    kind: yaml
+    spec:
+      file: .github/workflows/go.yml
+      key: $.jobs.build.steps[0].with.go-version
+    scmid: default
+  updateGithubWorkflowGolangCiLint:
+    name: 'Update Golang version in GitHub "golangcilint" workflow to {{ source "latestGoVersion" }}'
+    sourceid: latestGoVersion
+    kind: yaml
+    spec:
+      file: .github/workflows/golangci-lint.yml
+      key: $.jobs.golangci.steps[1].with.go-version
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Bump golang version to {{ source "latestGoVersion" }}
+    spec:
+      labels:
+        - dependencies
+        - golang
