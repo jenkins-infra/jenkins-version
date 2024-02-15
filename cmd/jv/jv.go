@@ -52,7 +52,7 @@ func init() {
 
 	RootCmd.Flags().Bool("version", false, "Show version")
 
-	RootCmd.SetFlagErrorFunc(func(cmd *cobra.Command, err error) error {
+	RootCmd.SetFlagErrorFunc(func(_ *cobra.Command, err error) error {
 		if err == pflag.ErrHelp {
 			return err
 		}
@@ -62,7 +62,7 @@ func init() {
 	RootCmd.AddCommand(cmd.NewGetCmd())
 	RootCmd.AddCommand(cmd.NewDownloadCmd())
 
-	RootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+	RootCmd.PersistentPreRun = func(_ *cobra.Command, _ []string) {
 		if Verbose {
 			logrus.SetLevel(logrus.DebugLevel)
 		}
@@ -101,7 +101,7 @@ var RootCmd = &cobra.Command{
 var versionCmd = &cobra.Command{
 	Use:    "version",
 	Hidden: true,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		fmt.Print(versionOutput)
 	},
 }
@@ -109,7 +109,7 @@ var versionCmd = &cobra.Command{
 var docsCmd = &cobra.Command{
 	Use:    "docs",
 	Hidden: true,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		RootCmd.DisableAutoGenTag = true
 
 		err := doc.GenMarkdownTree(RootCmd, "./docs")
@@ -136,7 +136,7 @@ When installing GitHub CLI through a package manager, however, it's possible tha
 no additional shell configuration is necessary to gain completion support. For
 Homebrew, see <https://docs.brew.sh/Shell-Completion>
 `,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		shellType, err := cmd.Flags().GetString("shell")
 		if err != nil {
 			return err
