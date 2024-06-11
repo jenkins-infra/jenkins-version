@@ -1,4 +1,6 @@
 ---
+version: 2
+
 env:
   - GO111MODULE=on
   - CGO_ENABLED=0
@@ -52,23 +54,22 @@ checksum:
   algorithm: sha256
 
 changelog:
-  skip: false
+  disable: false
 
 release:
   draft: false
-  prerelease: false
   name_template: "{{.Tag}}"
 
 brews:
   - name: jv
-    tap:
+    repository:
       owner: jenkins-infra
       name: homebrew-tap
       token: "{{ .Env.GITHUB_TOKEN }}"
     commit_author:
       name: jenkins-infra
       email: gareth@bryncynfelin.co.uk
-    folder: Formula
+    directory: Formula
     description: "Determine a Jenkins Version"
     homepage: https://github.com/jenkins-infra/jenkins-version
     install: |
