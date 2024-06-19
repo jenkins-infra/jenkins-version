@@ -68,7 +68,7 @@ brews:
       token: "{{ .Env.GITHUB_TOKEN }}"
     commit_author:
       name: jenkins-infra
-      email: gareth@bryncynfelin.co.uk
+      email: jenkins-infra-team@googlegroups.com
     directory: Formula
     description: "Determine a Jenkins Version"
     homepage: https://github.com/jenkins-infra/jenkins-version
