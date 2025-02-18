@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM} curlimages/curl:8.12.0 AS build-stage0
+FROM --platform=${BUILDPLATFORM} curlimages/curl:8.12.1 AS build-stage0
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -9,7 +9,7 @@ RUN curl -L -o /tmp/jv-${TARGETOS}-${TARGETARCH}.tar.gz https://github.com/jenki
       tar -xvzf /tmp/jv-${TARGETOS}-${TARGETARCH}.tar.gz -C /tmp && \
       chmod a+x /tmp/jv
 
-FROM --platform=${BUILDPLATFORM} alpine:3.21.2
+FROM --platform=${BUILDPLATFORM} alpine:3.21.3
 LABEL maintainer="Gareth Evans <gareth@bryncynfelin.co.uk>"
 
 COPY --from=build-stage0 /tmp/jv /usr/bin/jv
