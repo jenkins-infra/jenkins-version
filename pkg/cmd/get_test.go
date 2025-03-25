@@ -3,8 +3,9 @@ package cmd_test
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
+	"os"
 	"path"
 	"testing"
 
@@ -55,11 +56,11 @@ func TestGet(t *testing.T) {
 func stubWithFixture(t *testing.T, file string) {
 	version.Client = &mocks.MockClient{}
 
-	data, err := ioutil.ReadFile(path.Join("testdata", file))
+	data, err := os.ReadFile(path.Join("testdata", file))
 	assert.NoError(t, err)
 
 	// create a new reader with that JSON
-	r := ioutil.NopCloser(bytes.NewReader(data))
+	r := io.NopCloser(bytes.NewReader(data))
 	mocks.GetDoFunc = func(*http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: 200,
