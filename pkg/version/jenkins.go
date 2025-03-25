@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"sort"
@@ -97,7 +96,7 @@ func GetJenkinsVersion(metadataURL string, versionIdentifier string, username st
 		return "", err
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		return "", err
 	}

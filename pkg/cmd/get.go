@@ -105,7 +105,8 @@ func (c *GetCmd) setupEnvironmentVariables() {
 // Run runs the command.
 func (c *GetCmd) Run() error {
 	c.setupEnvironmentVariables()
-	v, err := version.GetJenkinsVersion(fmt.Sprintf("%smaven-metadata.xml", c.URL), c.VersionIdentifier, c.Username, c.Password)
+	metadataURL := fmt.Sprintf("%smaven-metadata.xml", c.URL)
+	v, err := version.GetJenkinsVersion(metadataURL, c.VersionIdentifier, c.Username, c.Password)
 	if err != nil {
 		return err
 	}
