@@ -22,13 +22,14 @@ func TestGetJenkinsVersion(t *testing.T) {
 		expected          string
 	}
 
-	const v_2_249_3 = "2.249.3"
+	const weeklyVersion = "2.249"
+	const ltsVersion = "2.249.3"
 	tests := []test{
 		{versionIdentifier: "latest", expected: "2.276"},
 		{versionIdentifier: "1", expected: "1.658"},
 		{versionIdentifier: "2", expected: "2.276"},
-		{versionIdentifier: "2.249", expected: v_2_249_3},
-		{versionIdentifier: v_2_249_3, expected: v_2_249_3},
+		{versionIdentifier: weeklyVersion, expected: ltsVersion},
+		{versionIdentifier: ltsVersion, expected: ltsVersion},
 	}
 
 	for _, tc := range tests {
