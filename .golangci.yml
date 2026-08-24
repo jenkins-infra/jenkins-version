@@ -58,6 +58,9 @@ linters:
         - style
     gocyclo:
       min-complexity: 30
+    gosec:
+      excludes:
+        - G404 # rand is only used inside tests for its Perm() method
     govet:
       enable:
         - shadow
